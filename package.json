@@ -4,13 +4,20 @@
   "description": "Chat App for my friends",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index.js",
     "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
+    "server": "/Users/a4085/mongodb/bin/mongod --dbpath=/Users/a4085/mongodb-data",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Anton Vorontsov",
   "license": "ISC",
   "dependencies": {
+    "bad-words": "^3.0.3",
     "env-cmd": "^10.1.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
