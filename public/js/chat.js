@@ -15,8 +15,29 @@ const sidebarTimplate = document.getElementById('sidebat-template').innerHTML;
 
 // Options
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
-console.log(username, room);
 
+const autoscroll = () => {
+    // New meessage element
+    const newMessage = messages.lastElementChild;
+
+    // Height of the last message
+    const newMessageStyles = getComputedStyle(newMessage);
+    const newMessageMargin = parseInt(newMessageStyles.marginBottom);
+    const newMessageHeight = newMessage.offsetHeight + newMessageMargin;
+
+    // Vissable height
+    const visiableHeight = messages.offsetHeight;
+
+    // Height of messages container
+    const containerHeight = messages.scrollHeight;
+
+    // How far have I scroll
+    const scrollOffset = messages.scrollTop + visiableHeight;
+
+    if (containerHeight - newMessageHeight >= scrollOffset) {
+        messages.scrollTop = messages.scrollHeight;
+    }
+}
 socket.on('message', (message) => {
     const html = Mustache.render(messageTemplate, {
         message: message.text,
@@ -24,6 +45,7 @@ socket.on('message', (message) => {
         createdAt: moment(message.createdAt).format('HH:mm')
     });
     messages.insertAdjacentHTML('beforeend', html);
+    autoscroll();
 })
 
 socket.on('locationMessage', message => {
@@ -34,6 +56,7 @@ socket.on('locationMessage', message => {
     })
 
     messages.insertAdjacentHTML('beforeend', html);
+    autoscroll();
 })
 
 socket.on('roomData', ({ room, users }) => {

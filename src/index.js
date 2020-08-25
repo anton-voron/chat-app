@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
 
         socket.join(user.room)
 
-        // io.to.emit - to all users in the room whithout sending info in the other rooms
+        // io.to(room).emit - to all users in the room whithout sending info in the other rooms
         // socket.brodcast.to(room).emit - to a specific chat room
 
         socket.emit('message', generateMessage('Welcome', 'Admin'));
@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
         const user = getUser(socket.id);
         const { room, username } = user;
         const { latitude, longitude } = position;
-        io.to(user.room).emit('locationMessage', generateLocationMessage(latitude, longitude, username));
+        io.to(room).emit('locationMessage', generateLocationMessage(latitude, longitude, username));
         callback('Location was shared with users')
     })
 
